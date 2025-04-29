@@ -178,88 +178,58 @@ The procedure is as follows:
 
 ### Results
 #### Adjusting Duty Cycle using a potentiometer and an ADC
-To test if adjusting the duty cycle was working, the ADC registers were confirmed to work through the debugger and printf() was used to display the ADC value.
-The two ADC functions have both been listed here so that it can be seen what the register values are supposed to be.
 
-        void initADC()
-        {
-            // Initialize the ADC
-            RCC->AHB2ENR |= (1 << 13); // Enable the ADC
-            RCC->CCIPR |= (1 << 29) | (1 << 28); // Select system clock for ADC
-            ADC1_COMMON->CCR = ((0b01) << 16) + (1 << 22) ; // Set ADC clock = HCLK and turn on the voltage reference
-            // Start ADC calibration    
-            ADC1->CR=(1 << 28); // Turn on the ADC voltage regulator and disable the ADC
-            delay_ms(100); // Wait for voltage regulator to stabilize (20 microseconds according to the datasheet).  This gives about 180microseconds
-            ADC1->CR |= (1<< 31);
-            while(ADC1->CR & (1 << 31)); // Wait for calibration to finish.
-            ADC1->CFGR = (1 << 31); // Disable injection
-            ADC1_COMMON->CCR |= (0x0f << 18);
-        }
-        
-        int readADC(int chan)
-        {
-            ADC1->SQR1 |= (chan << 6); // Set channel
-            ADC1->ISR = (1 << 3); // Clear EOS flag
-            ADC1->CR |= (1 << 0); // Enable the ADC
-            while ( (ADC1->ISR & (1 <<0))==0); // Wait for ADC to be ready
-            ADC1->CR |= (1 << 2); // Start conversion
-            while ( (ADC1->ISR & (1 <<3))==0); // Wait for conversion to finish
-            return ADC1->DR; // Return the result
-            ADC1->CR = 0;
-        }
-
-> This code block shows the two ADC functions
 
 ##### ADC Registers after initADC()  
-  - RCC->AHB2ENR:
+  - 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/4898b85a-c072-4942-bcc9-b971e8f9de5d" alt="RCC->AHB2ENR">
+  <img src="" alt="">
 </p>
 
-  - RCC->CCIPR:
+  - 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e64f22c1-6ab5-4430-8661-c0dff88d3507" alt="RCC->CCIPR">
+  <img src="" alt="RCC->CCIPR">
 </p>
 
-  - ADC1_COMMON->CCR:
+  - 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/01197425-717a-448c-9d52-2b40ed929dcb" alt="ADC1_COMMON->CCR">
+  <img src="" alt="">
 </p>
 
   - ADC1->CR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/3f82b536-8415-4435-856b-4d1c944f5df4" alt="ADC1->CR">
+  <img src="" alt="">
 </p>
 
   - ADC1->CFGR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e620059d-867b-42f7-9421-1728b00dc0af" alt="ADC1->CFGR">
+  <img src="" alt="ADC1->CFGR">
 </p>
 
 ##### ADC Registers after using readADC() function  
   - ADC1->SQR1:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0f87b573-3a43-4411-9077-20ce65480c4e" alt="ADC1->SQR1">
+  <img src="" alt="ADC1->SQR1">
 </p>
 
   - ADC1->ISR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fe5a06b3-b0d9-43c2-8336-9c5fc134aaf3" alt="ADC1->ISR">
+  <img src="" alt="ADC1->ISR">
 </p>
 
   - ADC1->CR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/61661653-ac1f-4e0d-bf8b-af2965fc8e44" alt="ADC1->CR">
+  <img src="" alt="ADC1->CR">
 </p>
 
   - ADC1->CFGR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cdcc8bd1-566f-4667-b220-a022b4fb419f" alt="ADC1->CFGR">
+  <img src="" alt="ADC1->CFGR">
 </p>
 
   - ADC1_COMMON->CCR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f7a9f23a-e98f-434a-a247-e229258400a5" alt="ADC1_COMMON->CCR">
+  <img src="" alt="ADC1_COMMON->CCR">
 </p>  
 
 ##### Using printf() to display the ADC value in the serial monitor:  
@@ -276,217 +246,11 @@ The two ADC functions have both been listed here so that it can be seen what the
 > Image of printed ADC values while adjusting the potentiometer
 
 #### Checking if the set current duty cycle button sets updateDutyCycle flag.
-To check if setting the current duty cycle sets the updateDutyCycle flag through EXTI5 when the button connected to PB5 was pressed, the debugger was used.
-
-- Before pressing the button connected to PB5  
-
-        // EXTI5 Interrupt Handler (Adjust Duty Cycle Button)
-        void EXTI9_5_IRQHandler(void)
-        {
-            if ((GPIOB->IDR & (1 << 5)) == 0) {  // Check if button is pressed
-                delay(10000);  // Debounce delay
-                if ((GPIOB->IDR & (1 << 5)) == 0) {  // Confirm stable press
-                    updateDutyCycle=1; // Set update duty cycle flag so interrupt is quick
-                }
-            }
-            EXTI->PR1 |= (1 << 5);  // Clear EXTI5 interrupt flag
-        }
-  > The code for the adjust duty cycle button interrupt   
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/59a81db1-2bb3-4546-bf2b-83819051c133" alt="updateDutyCycle variable before pressing button">
 </p>  
 
-  > Image showing the updateDutyCycle flag in the debugger before pressing button connected to PB5
-
-- After pressing the button:  
-
-            if(updateDutyCycle==1) // Updating Duty Cycle
-            {
-                stepVal[dutyAdjust_Idx] = readADC(5); // Insert current ADC value into array
-                dutyAdjust_Idx=(dutyAdjust_Idx+1)%NUM_STEPS; // Incremement dutyAdjust Idx by one in modulo 4
-                updateDutyCycle = 0; // Reset update duty cycle flag
-            }
-> The code in main for updating the duty cycle after the flag had been set
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/3b46d4f7-5077-462a-b523-8cc3700e5e7d" alt="updateDutyCycle variable after pressing button">
-</p>  
-
-> Image showing the updateDutyCycle flag in the debugger after pressing the button connected to PB5
-
-- After the steps duty cycle was set:
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/20381e6a-d64a-4e32-b14e-2844206a51db" alt="updateDutyCycle variable after pressing button">
-</p>  
-
-> Image showing the updateDutyCycle flag being reset to 0 after updating the duty for the step
-
-#### Playing Steps in Sequence in 1 second Intervals
-Each step in the sequence shown below in the array variable was intended to last for 1 second before incrementing to the next step. 
-
-        volatile uint32_t stepVal[NUM_STEPS] = {4000,2000,0,2000,4000,2000,0,2000};  // Duty Cycle array
-        
-Using the logic analyzer this was tested.
-> Note that the sequencer was initally start on the second step in the array so the last step in the full sequence is actually the first step.  
-
-##### Testing each Step through Logic Analyzer
-- Full Sequence
-  ![FullStepSequence](stepLApics/fullsequence.png)
-  
-- Step 1:
-  ![Step1](stepLApics/step8.png)
-  
-  Step 1 Duty Cycle:
-  ![Step1close](stepLApics/step8close.png)
-
-- Step 2:
-  ![Step2](stepLApics/step1.png)
-  
-  Step 2 Duty Cycle:
-  ![Step2close](stepLApics/step1close.png)
-
-- Step 3:  
-  This is a step that was set to be off (0) and this can be seen in the full sequence above as the first section of the full sequence with no changes from 0 to 1 or 1 to 0, it was 1 second long.
-  
-- Step 4:
-  ![Step4](stepLApics/step3.png)
-  
-  Step 4 Duty Cycle:
-  ![Step4close](stepLApics/step3close.png)
-
-- Step 5:
-  ![Step5](stepLApics/step4.png)
-  
-  Step 5 Duty Cycle:
-  ![Step5close](stepLApics/step4close.png)
-
-- Step 6:
-  ![Step6](stepLApics/step5.png)
-  
-  Step 6 Duty Cycle:
-  ![Step6close](stepLApics/step5close.png)
-
-- Step 7:  
-  This is a step that was set to be off (0) and this can be seen in the full sequence above as the second section of the full sequence with no changes from 0 to 1 or 1 to 0, it was 1 second long.
-
-- Step 8:
-  ![Step8](stepLApics/step7.png)
-  
-  Step 8 Duty Cycle:
-  ![Step8close](stepLApics/step7close.png)
-
-The time interval inbetween steps was found to be approximately 1 second long (there was small variations) and each step was shown to be played in the seqeunce, however the sequencer played from the second step instead of the first, however this was not considered a major issue as the seqeuncer was intended to loop anyway.
-
-#### Pausing the Sequencer
-To test if pausing worked, the register for the LED on port PB3 was looked at using the debugger and printf() was used to check if SysTick stopped incrementing the milliseconds variable. The logic analyzer was also used to to see if the PWM signal was stopped during the pause state since PWM is a setting from TIM1.
-
-            if(pauseState == 0) // If not paused
-            {
-                TIM1->CR1 |= (1<<0); // Enable TIM1
-                fillRectangle(4, 50, 100, 40, RGBToWord(0, 0, 0));  // Clear pause text
-            }
-            else if(pauseState == 1) //if paused
-            {
-                TIM1->CR1 &= ~(1<<0); // Disable TIM1
-                printTextX2("PAUSED", 4, 60, RGBToWord(255, 255, 255), RGBToWord(0, 0, 0));
-            }
-> Code in main to be used with the pauseState flag
-
-        // EXTI4 Interrupt Handler (Pause Button)
-        void EXTI4_IRQHandler() 
-        {
-            if ((GPIOB->IDR & (1 << 4)) == 0) {  // Check if button is pressed
-                delay(10000);  // Debounce delay
-                if ((GPIOB->IDR & (1 << 4)) == 0) {  // Confirm stable press
-                    pauseState = !pauseState;  // Toggle pause state
-                    GPIOB->ODR ^= (1 << 3);  // Toggle Red Pause LED (PB3)
-                }
-            }
-            EXTI->PR1 |= (1 << 4);  // Clear EXTI4 interrupt flag
-        }
-
-> EXTI4 interrupt handler code used when PB4 button is pressed
-
-##### Port PB3 Register and EXTI4 pauseState flag
-- Before pressing the button connected to PB4
-  - GPIOB->ODR and TIM1->CR1:
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/ef2d6f47-d8f6-4e8c-950b-1176b414262a">
-  <img src="https://github.com/user-attachments/assets/a7ec86f6-ff38-4b24-b941-3c45b86195b6">
-</p>
-
-> Image showing the GPIOB->ODR and TIM1->CR1 registers before setting the pauseState flag
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/7e68a244-de12-426a-9157-578792c9857e">
-</p> 
-
-> Image showing the pauseState flag at 0
-
-- After pressing the button connected to PB4
-  - GPIOB->ODR and TIM1->CR1:
-    
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/12f72665-f252-483b-8199-c4f6fe9d7011">
-  <img src="https://github.com/user-attachments/assets/5710f0cf-2083-4cb5-813c-c179d60ce9a3">
-</p> 
-
-> Image showing the GPIOB->ODR and TIM1->CR1 registers after setting pauseState flag
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/c7925f95-3d5e-4864-9d59-c9e0c9a1bd65">
-</p> 
-
-> Image showing the pauseState flag at 1
-
-Since the register for PB3 is set, the LED is on
-
-- After pressing the button connected to PB4 again (leave pause state)
-  - GPIOB-> ODR and TIM1->CR1:
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/dbfee7a3-6285-4f2f-a0b5-0dd94f9a85b2">
-  <img src="https://github.com/user-attachments/assets/07d000b0-3851-4b8b-83b6-a4d81619d9d6">
-</p> 
-
-> Image showing the GPIOB->ODR and TIM1->CR1 registers after clearing the pauseState flag
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/7e68a244-de12-426a-9157-578792c9857e">
-</p> 
-
-> Image showing the pauseState flag at 0 again
-
-##### Using printf() for tickcntr variable to show behaviour during pause state
-  
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/82290a7b-3d3b-4bde-b97e-4c4c9441911a">
-</p> 
-
-> Image showing that tickcntr has successfully been paused and is not incrementing while the pauseState flag is set. It can be seen that 564 is printed multiple times as it does not increment.
-
-##### Logic analyzer showing PWM during pause state
-Two step pauses were tested using the logic analyzer with one being less than a second and the other being multiple seconds
-- Pausing and unpausing in the same step (full 4000 value)
-  - Step before the pause
-    ![image](https://github.com/user-attachments/assets/79cc273a-f596-4224-91b5-c9d332be4638)
-
-  - Step continued after the pause
-    ![image](https://github.com/user-attachments/assets/8d69531e-e6c0-4318-a3dd-c7232563db1a)
-    
-- Pausing and unpausing as another step begins
-  - Step before the pause
-    ![image](https://github.com/user-attachments/assets/ac4253cc-8516-418c-8200-4d7b7fab72c7)
-
-  - Step after the pause
-    ![image](https://github.com/user-attachments/assets/05ab4152-ee1c-48e8-a31d-8c2c67485bb7)
-
-    The pause state seemed to cause the step to last less time than its intended 1 second duration when paused and unpaused in the same step. 
-    Pausing before going to the next step does not seem to be as impactful but still causes a minor loss in the steps duration.
-    Both of these effects are likely due to the delay in the EXTI4 handler as the delay is 10000 ticks long which may be causing the external interrupt to use up between 100-200 ms of the steps duration before the interrupt flag is actually cleared.
 
 #### ST7735 Display
 To test if the display worked, the display itself was used along with the debugger and logic analyzer.
@@ -521,53 +285,52 @@ To test if the display worked, the display itself was used along with the debugg
 ##### Using the debugger to test if SPI was initalizing correctly:
   - RCC->APB2ENR:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/bf5b49c8-cc49-4486-b978-299f578f1887">
+  <img src="">
 </p> 
   
   - pinMode(GPIOA,X,2):
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e1e9d341-6fa3-4e2e-8dfa-35afa2434d8c">
+  <img src="">
 </p> 
   
   - alternateFunction(GPIOA,X,5)
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e1e4fcfb-bada-4556-9a7e-c6a92d0632f5">
+  <img src="">
 </p> 
   
   - drain = spi->SR
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d1ed31ba-c609-4e1f-b89b-8a0b8f4aa52a">
+  <img src="">
 </p> 
   
   - spi->CR1:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/1798a383-0200-4014-8518-96e23fd3820b">
+  <img src="">
 </p> 
   
   - spi->CR2:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fbb6e350-097d-4cc3-b51a-12a7c7deaf78">
+  <img src="">
 </p> 
 
 ##### Using the Logic analyzer to ensure that data was being sent through the SDA (MOSI) pin of the ST7735 LCD Display
-These are all from the same logic analyzer recording over 40 seconds  
+These are all from the same logic analyzer recording 
 
-  ![image](https://github.com/user-attachments/assets/089821fc-3363-4f0f-b3f3-80873c2bec9d)
+  ![image]()
   
-  ![image](https://github.com/user-attachments/assets/32b27ebe-33f5-4fe7-9160-f3c0ae34d06c)
+  ![image]()
 
-  ![image](https://github.com/user-attachments/assets/522f6e1d-8034-4a33-96cd-c559452e927c)
+  ![image]()
 
 From this it can be seen that data was being sent through the SDA pin on the ST7735 LCD display to update it
 
 ## Conclusion
-The 8-step sequencer met all of the main objectives of the project except for allowing a MIDI connection to transmit to and from the board which was not possible due to time constraints. All other objectives were met and using the board and components with the provided code provides the a basic 8-step sequencer with ST7735 display support. Some improvments could be made to the accuracy of timing for the step intervals and future work for this could be to implement the MIDI connection and to allow for the timing of the step interval to also be adjusted. Overall, the project was a success. 
 
 ## Video Demo of the Project
 This video shows a demonstration of all of the features working in the project as of 22/03/2025
 
 <p align="center">
-  <a href="https://youtu.be/9ztGW3eI3FU">
-    <img src="https://img.youtube.com/vi/9ztGW3eI3FU/0.jpg" alt="Video Demonstration of the 8-Step Sequencer Working">
+  <a href="">
+    <img src="" alt="Video Demonstration of the TurretXY working">
   </a>
 </p>
