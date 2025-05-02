@@ -127,7 +127,9 @@ When designing the system, multiple state machine diagrams and a flowchart were 
 
 #### Main While loop flowchart
 
-![Main while loop flowchart](./images/TurretXY_Main_Loop.png)
+<p align="center">
+  <img src="./images/TurretXY_Main_Loop.png" alt="Main while loop flowchart">
+</p>  
 
 #### TIM2 Input Capture machine state diagram
 
