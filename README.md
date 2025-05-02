@@ -57,7 +57,8 @@ The aim of this project is to program an Nucleo-L432KC and build a circuit, that
 - 2x 20kΩ Potentiometer
 - 1x Push Buttons
 - 2x Tower Pro Micro Servo 9g (or any servo capable of being powered by 5V)
-- 1x 470uF Electrolytic Capacitor 
+- 1x 470uF Electrolytic Capacitor
+- 2x 0.1uF Ceramic Disc Capacitors
 - 2x 10kΩ Resistors
 
 #### Other requirements:
