@@ -331,8 +331,8 @@ uint16_t pot_to_servo(uint16_t pot_value)
 void servo_startup_ramp_stepper(void)
 {
     static uint8_t initializedCalibration = 0;
-    static int16_t start1;
-    static int16_t start2;
+    static int16_t start_Y;
+    static int16_t start_X;
     static uint16_t target = 74;   // Target 90 degrees (1.5ms pulse width)
     static uint32_t last_ramp_time = 0;
     static uint8_t initTIM1valsFLAG = 0;
@@ -349,8 +349,8 @@ void servo_startup_ramp_stepper(void)
     // If initialize calibration flag is not set
     if (!initializedCalibration)
     {
-        start1 = TIM1->CCR1; // Calibrate Servo Y
-        start2 = TIM1->CCR2; // Calibrate Servo X
+        start_Y = TIM1->CCR1; // Calibrate Servo Y
+        start_X = TIM1->CCR2; // Calibrate Servo X
         initializedCalibration = 1; // Set Flag
     }
     // Only ramp up every 10 ms to avoid servos moving too quickly
@@ -358,23 +358,23 @@ void servo_startup_ramp_stepper(void)
     {
         last_ramp_time = milliseconds;
 
-        // Ramp start1 toward target
-        if (start1 < target)
-            start1++;
-        else if (start1 > target)
-            start1--;
+        // Ramp start_Y toward target
+        if (start_Y < target)
+            start_Y++;
+        else if (start_Y > target)
+            start_Y--;
 
-        // Ramp start2 toward target
-        if (start2 < target)
-            start2++;
-        else if (start2 > target)
-            start2--;
+        // Ramp start_X toward target
+        if (start_X < target)
+            start_X++;
+        else if (start_X > target)
+            start_X--;
 
-        TIM1->CCR1 = start1;
-        TIM1->CCR2 = start2;
+        TIM1->CCR1 = start_Y;
+        TIM1->CCR2 = start_X;
 
         // Check if both channels reached target
-        if (start1 == target && start2 == target)
+        if (start_Y == target && start_X == target)
         {
             calibrated = 1; // Set Flag
         }
@@ -696,49 +696,49 @@ void displayFunctions(void)
         waitForSPIReady();
 
         // Servo X static
-        uint16_t center_start1 = 20; // Initial x coordinate for Servo X static wave
+        uint16_t center_start_Y = 20; // Initial x coordinate for Servo X static wave
 
-        // Horizontal red line from (center_start1, 50) to (centre_start1 + 10, 50)
-        drawLine(center_start1, 50, center_start1 + 10, 50, RGBToWord(255, 0, 0));
+        // Horizontal red line from (center_start_Y, 50) to (centre_start_Y + 10, 50)
+        drawLine(center_start_Y, 50, center_start_Y + 10, 50, RGBToWord(255, 0, 0));
         waitForSPIReady();
 
-        // Vertical white line from (center_start1 + 10, 50) to (center_start1 + 10, 20)
-        drawLine(center_start1 + 10, 50, center_start1 + 10, 20, RGBToWord(255, 255, 255));
+        // Vertical white line from (center_start_Y + 10, 50) to (center_start_Y + 10, 20)
+        drawLine(center_start_Y + 10, 50, center_start_Y + 10, 20, RGBToWord(255, 255, 255));
         waitForSPIReady();
 
-        // Horizontal green line from (center_start1 + 10, 20) to (center_start1 + 10 + saved+widthHigh1, 20)
-        drawLine(center_start1 + 10, 20, center_start1 + 10 + saved_widthHigh1, 20, RGBToWord(0, 255, 0));
+        // Horizontal green line from (center_start_Y + 10, 20) to (center_start_Y + 10 + saved+widthHigh1, 20)
+        drawLine(center_start_Y + 10, 20, center_start_Y + 10 + saved_widthHigh1, 20, RGBToWord(0, 255, 0));
         waitForSPIReady();
 
-        // Vertical white line from (center_start1 + 10 saved_widthHigh1, 20) to (center_start1 + 10 + saved_widthHigh1)
-        drawLine(center_start1 + 10 + saved_widthHigh1, 20, center_start1 + 10 + saved_widthHigh1, 50, RGBToWord(255, 255, 255));
+        // Vertical white line from (center_start_Y + 10 saved_widthHigh1, 20) to (center_start_Y + 10 + saved_widthHigh1)
+        drawLine(center_start_Y + 10 + saved_widthHigh1, 20, center_start_Y + 10 + saved_widthHigh1, 50, RGBToWord(255, 255, 255));
         waitForSPIReady();
 
-        // Horizontal red line from (center_start1 + 10 + saved_widthHigh1, 50) to (center_start1 + 10 + saved_widthHigh1 + 10, 50)
-        drawLine(center_start1 + 10 + saved_widthHigh1, 50, center_start1 + 10 + saved_widthHigh1 + 10, 50, RGBToWord(255, 0, 0));
+        // Horizontal red line from (center_start_Y + 10 + saved_widthHigh1, 50) to (center_start_Y + 10 + saved_widthHigh1 + 10, 50)
+        drawLine(center_start_Y + 10 + saved_widthHigh1, 50, center_start_Y + 10 + saved_widthHigh1 + 10, 50, RGBToWord(255, 0, 0));
         waitForSPIReady();
 
         // Servo Y static
-        uint16_t center_start2 = 90; // Initial x-coordinate for Servo Y static wave
+        uint16_t center_start_X = 90; // Initial x-coordinate for Servo Y static wave
 
-        // Horizontal red line from (center_start2, 50) to (centre_start2 + 10, 50)
-        drawLine(center_start2, 50, center_start2 + 10, 50, RGBToWord(255, 0, 0));
+        // Horizontal red line from (center_start_X, 50) to (centre_start_X + 10, 50)
+        drawLine(center_start_X, 50, center_start_X + 10, 50, RGBToWord(255, 0, 0));
         waitForSPIReady();
 
-        // Vertical white line from (center_start2 + 10, 50) to (center_start2 + 10, 20)
-        drawLine(center_start2 + 10, 50, center_start2 + 10, 20, RGBToWord(255, 255, 255));
+        // Vertical white line from (center_start_X + 10, 50) to (center_start_X + 10, 20)
+        drawLine(center_start_X + 10, 50, center_start_X + 10, 20, RGBToWord(255, 255, 255));
         waitForSPIReady();
 
-        // Horizontal green line from (center_start2 + 10, 20) to (center_start2 + 10 + saved_widthHigh2, 20)
-        drawLine(center_start2 + 10, 20, center_start2 + 10 + saved_widthHigh2, 20, RGBToWord(0, 255, 0));
+        // Horizontal green line from (center_start_X + 10, 20) to (center_start_X + 10 + saved_widthHigh2, 20)
+        drawLine(center_start_X + 10, 20, center_start_X + 10 + saved_widthHigh2, 20, RGBToWord(0, 255, 0));
         waitForSPIReady();
 
-        // Vertical white line from (center_start2 + 10 saved_widthHigh2, 20) to (center_start2 + 10 + saved_widthHigh2)
-        drawLine(center_start2 + 10 + saved_widthHigh2, 20, center_start2 + 10 + saved_widthHigh2, 50, RGBToWord(255, 255, 255));
+        // Vertical white line from (center_start_X + 10 saved_widthHigh2, 20) to (center_start_X + 10 + saved_widthHigh2)
+        drawLine(center_start_X + 10 + saved_widthHigh2, 20, center_start_X + 10 + saved_widthHigh2, 50, RGBToWord(255, 255, 255));
         waitForSPIReady();
 
-        // Horizontal red line from (center_start2 + 10 + savedwidthHigh2, 50) to (center_start2 + 10 + saved_widthHigh2 + 10, 50)
-        drawLine(center_start2 + 10 + saved_widthHigh2, 50, center_start2 + 10 + saved_widthHigh2 + 10, 50, RGBToWord(255, 0, 0));
+        // Horizontal red line from (center_start_X + 10 + savedwidthHigh2, 50) to (center_start_X + 10 + saved_widthHigh2 + 10, 50)
+        drawLine(center_start_X + 10 + saved_widthHigh2, 50, center_start_X + 10 + saved_widthHigh2 + 10, 50, RGBToWord(255, 0, 0));
         waitForSPIReady();
 
         dispStats();

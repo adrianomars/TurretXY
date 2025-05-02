@@ -4,6 +4,23 @@ All notable changes to this project are documented here.
 
 ---
 
+## [v1.0.2] - 02/05/25
+### Added
+- Added an I/O list into the comments
+
+### Changed
+- Changed POT_ADC_MIN to 4000 and POT_ADC_MAX to 4000
+- Changed pwmToAngle to use defined variables
+- Changed start variables to be appropiately named
+- Changed state variable names to be more clear in TIM2 handler
+- Changed all variable names where appropiate where necessary due to previously mentioned changes
+
+### Fixed
+- Fixed servo ramp up function by moving initial TIM1 CCRx values into an if-statement
+
+
+---
+
 ## [v1.0.1] - 29/04/25
 ### Added
 - Reintroduced and completed missing inline comments in `main.c` to improve clarity and maintainability of all major logic blocks.
