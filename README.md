@@ -251,25 +251,25 @@ To remove noise at the potentiometers, two 10,000 ohm resistors were connected i
 
 Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
 
-##### Using printf() to display the ADC value in the serial monitor:  
-  For testing with printf() and the serial monitor from PlatformIO, the potentiometer was slowly adjusted slowly to see if each value would be read and converted correctly as 0-3.3V was converted into a digital unit between 0-4095.
-  
-        //printf("%ld \n", readADC(5));
-  
-  > The code used to print the ADC value in the while loop  
+#### Testing if EXTI5 does increment the displayMode counter variable.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/846a7f7d-e6c6-406a-a5a8-805bd0f4f2bd" alt="Printed ADC values">
+  <img src="" alt="displayMode == 0">
 </p>  
-
-> Image of printed ADC values while adjusting the potentiometer
-
-#### Checking if the set current duty cycle button sets updateDutyCycle flag.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/59a81db1-2bb3-4546-bf2b-83819051c133" alt="updateDutyCycle variable before pressing button">
+  <img src="" alt="displayMode == 1">
+</p>
+
+<p align="center">
+  <img src="" alt="displayMode == 2">
+</p>
+
+<p align="center">
+  <img src="" alt="displayMode cycles back to 0 after incrementing past displayMode == 2">
 </p>  
 
+The test was successful and after incrementing past two the displayMode successfully return to displayMode = 0.
 
 #### ST7735 Display
 To test if the display worked, the display itself was used along with the debugger and logic analyzer.
