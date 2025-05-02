@@ -148,10 +148,10 @@ When designing the system, multiple state machine diagrams and a flowchart were 
 
 ### Testing Procedure
 #### Debugger Procedure
-The debugger was used to check if bits in registers were being correctly set while the code was running. Every time new code was added, a breakpoint would be set at that code and the debugger would be run until it got to that breakpoint where each register would then be inspected to make sure that they were being set and cleared as expected. 
+The debugger was used to check if bits in registers were being correctly set while the code was running. Every time new code was added, a breakpoint would be set at new code and the debugger would be used to ensure each register would work as expected. 
 
 #### Logic Analyzer Procedure
-A logic analyzer was used during this project to test if signals were being sent to each of the boards peripherals correctly. This is extremely useful since there is not many ways to debug or test problems with board peripheral outputs such as SPI or PWM without using this or an oscilloscope which is much more expensive.
+A logic analyzer was used to test if signals were being sent from each of the PWM outputs correctly. SPI was also tested using this.
 
 The procedure is as follows:
 1. Connect the necessary amount of channels from the logic analyzer to the board or peripheral that is being tested. Ensure that the ground channel is connected to ground or the signals will not work.
@@ -182,7 +182,7 @@ The procedure is as follows:
 > Image showing testing of SPI signal, checking if the 500ms delay is working inbetween refreshes
 
 #### Printf using USART Procedure
-For debugging it was useful to use printf(), as it prints values from variables which allows for debugging and testing for any peripheral or function that stores a value that is meant to change. It was used to ensure the ADC values changed correctly when adjusting the potentiometers. 
+The function printf() transmitted serial data through to the serial monitor which was used for debugging. This was used for displaying changes in measured inputs.
 
 The procedure is as follows:
 1. The functions to enable and use USART on the board were put into the main file for the code. In the code provided for this project these functions are called initSerial(), _write(), and eputc().
@@ -191,17 +191,15 @@ The procedure is as follows:
 3. Go to main and create a while loop which uses printf() to print the variable (repeat this print multiple times if necessary to show iterative updates and use delays to make it more readable).
 4. Go to the serial monitor and watch as the code runs. If needed this can be done in conjunction with the debugger.
 
-              // Print milliseconds through serial for debugging SysTick (uncomment to use)
-              printf("%ld \n",milliseconds);
+        // Print ADC values
+        printf("Pot1: %u | Pot2: %u\n", pot1_avg, pot2_avg);
+        delay_ms(50); // Small delay for readability
   
-> This is the code used for printing the milliseconds variable
-
-![Printf() being used to to show milliseconds variable value](printfdebug.png)
-> Image shows printf() printing the value of the variable milliseconds while program is running
+> This is the code used for printing the ADC processed/unprocessed readings
 
 ### Results
-#### Adjusting Duty Cycle using a potentiometer and an ADC
-
+#### Dual channel ADC initialization and readings
+To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly. Testing the ADC readings involved printing the ADC values to the serial monitor.
 
 ##### ADC Registers after initADC()  
   - 
@@ -229,31 +227,29 @@ The procedure is as follows:
   <img src="" alt="ADC1->CFGR">
 </p>
 
-##### ADC Registers after using readADC() function  
-  - ADC1->SQR1:
+##### Testing readADC_All
+  - ADC Readings from potentiometers both maximum value:
+
 <p align="center">
-  <img src="" alt="ADC1->SQR1">
+  <img src="" alt="Max ADC values using printf">
 </p>
 
-  - ADC1->ISR:
+  - ADC Readings from potentiometers both at lowest value:
+
 <p align="center">
   <img src="" alt="ADC1->ISR">
 </p>
 
-  - ADC1->CR:
+To remove noise at the potentiometers, two 10,000 ohm resistors were connected in parallel to the wire connecting to the pins the ADC was reading from and connected to ground. This removed noise and allowed for a consistent minimum value of 0 from the ADC.
+
+
+  - ADC Readings from potentiometers with one at half-maximum value and the other at max:
+
 <p align="center">
-  <img src="" alt="ADC1->CR">
+  <img src="" alt="Showing no cross-talk">
 </p>
 
-  - ADC1->CFGR:
-<p align="center">
-  <img src="" alt="ADC1->CFGR">
-</p>
-
-  - ADC1_COMMON->CCR:
-<p align="center">
-  <img src="" alt="ADC1_COMMON->CCR">
-</p>  
+Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
 
 ##### Using printf() to display the ADC value in the serial monitor:  
   For testing with printf() and the serial monitor from PlatformIO, the potentiometer was slowly adjusted slowly to see if each value would be read and converted correctly as 0-3.3V was converted into a digital unit between 0-4095.
