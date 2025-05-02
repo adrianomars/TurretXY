@@ -48,7 +48,7 @@ The aim of this project is to program an Nucleo-L432KC and build a circuit, that
 > > Scolling wave mode will display the PWM signal in an exaggerated form so it is more intuitive (the actual duty cycle percentage is adjustable between 3% and 11% as this is how servos are controlled). The exaggerated form makes it seem like the duty is being adjusted between 10% and 100%. The wave will scroll by and change using updates from the timer capture. 
 ## Circuit Schematic
 
-![Circuit Schematic](./images/TurretXYschematic.png)
+![Circuit Schematic](./images/schematicV2.png)
 
 > Image of the circuit schematic that was made using KiCAD
 #### Required Hardware Components:
