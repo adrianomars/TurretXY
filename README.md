@@ -111,7 +111,7 @@ Building the code will compile the CSMIS and HAL files and uploading to the to t
 - The static wave display for the PWM outputs to each servo X and Y is the second display. The waveforms show a cropped PWM signal so that the active duty cycle percentage is easy to visualize.
 - The scrolling wave display for the PWM outputs to each servo is the third display. The waveforms show an exaggerated PWM signal since thge actual duty cycle percentage at max is 11% but that is hard to see on such a small screen.
 
-### Structure
+### File Structure
 There is multiple files used with the main file.
 
 | File  |  Purpose  |
@@ -122,6 +122,26 @@ There is multiple files used with the main file.
 | spi.c | Contains communication protocol which is used to communicate with the ST7735 display, 1 new function and 1 new variable was added. waitForSPIReady() and ACTIVE_SPI|
 | font5x7.h   | Contains the fonts that the display drivers use for writing text and numbers to the ST7735 LCD |
 
+### Diagrams
+When designing the system, multiple state machine diagrams and a flowchart were used. This helped to understand how the code would flow and to break problems down into easy to understand diagrams.
+
+#### Main While loop flowchart
+
+![Main while loop flowchart](./images/TurretXY_Main_Loop.png)
+
+#### TIM2 Input Capture machine state diagram
+
+![TIM2 Input Capture machine state diagram](./images/TIM2_CAPTURE.png)
+
+#### Servo Ramp state machine diagram
+
+![Servo Ramp state machine diagram](./images/Servo_Ramp_State_Machine.png)
+
+#### displayMode machine state diagram
+
+![displayMode machine state diagram](./images/DisplayMode_State_Machine_Diagram.png)
+
+#### 
 ## Testing and Results
 
 ### Testing Procedure
