@@ -200,12 +200,12 @@ The procedure is as follows:
 ### Results
 #### GPIO and Alternate Function Registers
 
-<p align ="center">
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <img src="/images/AHBxENR.PNG">
   <img src="/images/RCC_APB1ENR1.PNG">
   <img src="/images/RCC_APB1ENR2.PNG">
   <img src="/images/RCC_APB2ENR.PNG">
-</p>
+</div>
 
 #### Dual channel ADC initialization and readings
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly. Testing the ADC readings involved printing the ADC values to the serial monitor.
