@@ -280,7 +280,15 @@ To test that TIM1 was correctly configured for PWM through 2 channels, the regis
 </p>
 
 #### Testing TIM2 Input Capture
+To test that TIM1 was correctly configured for Input Capture for the 2 channels, the registers were inspected.
 
+<p align="center">
+  <img src="/images/TIM2_CAPTURE.PNG" alt="Showing that BTDR was configured correctly" width=150 >
+  <img src="/images/TIM2_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
+  <img src="/images/TIM2_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
+  <img src="/images/TIM2_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
+  <img src="/images/TIM2_DIER.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
+</p>
 
 #### Testing if EXTI5 does increment the displayMode counter variable.
 To test if EXTI5 did increment the displayMode counter correctly, a variable watcher was used during the debugger and pictures were taken of the display to show that it worked successfully.
