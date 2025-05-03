@@ -339,46 +339,19 @@ To test if the display worked, the display itself was used along with the debugg
 > Code block containing the initSPI function used in the code
 
 ##### Using the debugger to test if SPI was initalizing correctly:
-  - RCC->APB2ENR:
-<p align="center">
-  <img src="">
-</p> 
-  
-  - pinMode(GPIOA,X,2):
-<p align="center">
-  <img src="">
-</p> 
-  
-  - alternateFunction(GPIOA,X,5)
-<p align="center">
-  <img src="">
-</p> 
   
   - drain = spi->SR
 <p align="center">
   <img src="">
 </p> 
-  
-  - spi->CR1:
+
+  - SPI CR1 and CR2:
 <p align="center">
-  <img src="">
-</p> 
-  
-  - spi->CR2:
-<p align="center">
-  <img src="">
+  <img src="/images/SPI1_CR1_CR2.PNG">
 </p> 
 
-##### Using the Logic analyzer to ensure that data was being sent through the SDA (MOSI) pin of the ST7735 LCD Display
-These are all from the same logic analyzer recording 
-
-  ![image]()
-  
-  ![image]()
-
-  ![image]()
-
-From this it can be seen that data was being sent through the SDA pin on the ST7735 LCD display to update it
+##### Using the Logic analyzer to analyze display updates
+The logic analyzer was used to analyze the three update timing of the different displayMode states 
 
 #### USART Registers
 
