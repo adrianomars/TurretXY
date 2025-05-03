@@ -198,6 +198,15 @@ The procedure is as follows:
 > This is the code used for printing the ADC processed/unprocessed readings
 
 ### Results
+#### GPIO and Alternate Function Registers
+
+<p align ="center">
+  <img src="/images/AHBxENR.PNG">
+  <img src="/images/RCC_APB1ENR1.PNG">
+  <img src="/images/RCC_APB1ENR2.PNG">
+  <img src="/images/RCC_APB2ENR.PNG">
+</p>
+
 #### Dual channel ADC initialization and readings
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly. Testing the ADC readings involved printing the ADC values to the serial monitor.
 
@@ -231,7 +240,7 @@ To test that the dual channel ADC initialized, the debugger was used to check th
   - ADC Readings from potentiometers both maximum value:
 
 <p align="center">
-  <img src="/images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf">
+  <img src="/images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf" width = 400>
 </p>
 
   - ADC Readings from potentiometers both at lowest value:
