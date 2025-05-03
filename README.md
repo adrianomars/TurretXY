@@ -246,8 +246,8 @@ To remove noise at the potentiometers, two 10,000 ohm resistors were connected i
   - ADC Readings from potentiometers with one at half-maximum value and the other at max:
 
 <p align="center">
-  <img src="/images/ADCreadingsCROSSTALK1.PNG" alt="Showing no cross-talk" width=400 height=600>
-  <img src="/images/ADCreadingsCROSSTALK2.PNG" alt="Showing no cross talk" width=400 height=600>
+  <img src="/images/ADCreadingsCROSSTALK1.PNG" alt="Showing no cross-talk" width=400 height=400>
+  <img src="/images/ADCreadingsCROSSTALK2.PNG" alt="Showing no cross talk" width=400 height=400>
 </p>
 
 Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
