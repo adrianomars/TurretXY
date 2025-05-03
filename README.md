@@ -357,7 +357,9 @@ To test if the display worked, the display itself was used along with the debugg
     <figcaption>CR1 and CR2 Registers</figcaption>
   </figure>
 </p>
+
 ##### Testing update timing with the Logic Analyzer
+
 <h3 align="center">Logic Analyzer: Aiming Angle</h3>
 
 <p align="center">
@@ -408,6 +410,7 @@ To test if the display worked, the display itself was used along with the debugg
     <figcaption>SPI Clock Duration Updating Waves</figcaption>
   </figure>
 </p>
+
 The scrolling wave clock pulses show the initial update clearing the screen and the following updates adding the newer updated waveforms ahead. It can be seen that it takes approximately 320 ms for each  before clearing the screen. 
 
 #### USART Registers
