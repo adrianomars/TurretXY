@@ -231,13 +231,13 @@ To test that the dual channel ADC initialized, the debugger was used to check th
   - ADC Readings from potentiometers both maximum value:
 
 <p align="center">
-  <img src="" alt="Max ADC values using printf">
+  <img src="/images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf">
 </p>
 
   - ADC Readings from potentiometers both at lowest value:
 
 <p align="center">
-  <img src="" alt="ADC1->ISR">
+  <img src="/images/ADCreadingsMIN.PNG" alt="Min ADC readings using printf">
 </p>
 
 To remove noise at the potentiometers, two 10,000 ohm resistors were connected in parallel to the wire connecting to the pins the ADC was reading from and connected to ground. This removed noise and allowed for a consistent minimum value of 0 from the ADC.
