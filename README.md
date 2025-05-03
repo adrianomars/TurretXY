@@ -128,7 +128,7 @@ When designing the system, multiple state machine diagrams and a flowchart were 
 #### Main While loop flowchart
 
 <p align="center">
-  <img src="./images/TurretXY_Main_Loop.png" alt="Main while loop flowchart">
+  <img src="./images/TurretXY_Main_Loop.png" alt="Main while loop flowchart" width =300>
 </p>  
 
 #### TIM2 Input Capture machine state diagram
@@ -194,10 +194,10 @@ Once the display was working, it was used to test and debug code since it could 
 - Enabled Peripherals
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-  <img src="/images/AHBxENR.PNG" width = 200>
-  <img src="/images/RCC_APB1ENR1.PNG" width = 200>
-  <img src="/images/RCC_APB1ENR2.PNG" width = 200>
-  <img src="/images/RCC_APB2ENR.PNG" width = 200>
+  <img src="./images/AHBxENR.PNG" width = 200>
+  <img src="./images/RCC_APB1ENR1.PNG" width = 200>
+  <img src="./images/RCC_APB1ENR2.PNG" width = 200>
+  <img src="./images/RCC_APB2ENR.PNG" width = 200>
 </div>
 
 All of the peripherals successfully had their clocks enabled.
@@ -205,10 +205,10 @@ All of the peripherals successfully had their clocks enabled.
 - GPIO Moder and Alternate Function Registers
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-  <img src="/images/PAxRegisters.PNG" width = 200>
-  <img src="/images/PAxRegistersAF.PNG" width = 200>
-  <img src="/images/PBxRegisters.PNG" width = 200>
-  <img src="/images/PBxRegistersAF.PNG" width = 200>
+  <img src="./images/PAxRegisters.PNG" width = 200>
+  <img src="./images/PAxRegistersAF.PNG" width = 200>
+  <img src="./images/PBxRegisters.PNG" width = 200>
+  <img src="./images/PBxRegistersAF.PNG" width = 200>
 </div>
 
 Each GPIO was successfully assigned the appropiate mode and if necessary, alternate functions too.
@@ -219,29 +219,29 @@ To test that the dual channel ADC initialized, the debugger was used to check th
 ##### ADC Registers after initADC()  
   - System Clock, VREFEN, PSC, ADC Voltage Regulator, Calibration, and ADC Enabled
 <p align="center">
-  <img src="/images/RCC_CCIPR.PNG" alt="RCC->CCIPR">
-  <img src="/images/ADC1_COMMON_CCR.PNG" alt="RCC->CCIPR">
-  <img src="/images/ADC1_CR.PNG" alt="ADC1->CR">
+  <img src="./images/RCC_CCIPR.PNG" alt="RCC->CCIPR">
+  <img src="./images/ADC1_COMMON_CCR.PNG" alt="RCC->CCIPR">
+  <img src="./images/ADC1_CR.PNG" alt="ADC1->CR">
 </p>
 
   - ADC Configuration, ADC SQR1, and ADC Sample Cycle Length
 <p align="center">
-  <img src="/images/ADC1_CFGR.PNG" alt="ADC1->CFGR">
-  <img src="/images/ADC1_SQR1.PNG" alt="ADC1->SQR1">
-  <img src="/images/ADC1_SMPR1.PNG" alt="ADC1->SMPR1">
+  <img src="./images/ADC1_CFGR.PNG" alt="ADC1->CFGR">
+  <img src="./images/ADC1_SQR1.PNG" alt="ADC1->SQR1">
+  <img src="./images/ADC1_SMPR1.PNG" alt="ADC1->SMPR1">
 </p>
 
 ##### Testing readADC_All
   - ADC Readings from potentiometers both maximum value:
 
 <p align="center">
-  <img src="/images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf" width = 400>
+  <img src="./images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf" width = 400>
 </p>
 
   - ADC Readings from potentiometers both at lowest value:
 
 <p align="center">
-  <img src="/images/ADCreadingsMIN.PNG" alt="Min ADC readings using printf">
+  <img src="./images/ADCreadingsMIN.PNG" alt="Min ADC readings using printf">
 </p>
 
 To remove noise at the potentiometers, two 10,000 ohm resistors were connected in parallel to the wire connecting to the pins the ADC was reading from and connected to ground. This removed noise and allowed for a consistent minimum value of 0 from the ADC.
@@ -249,8 +249,8 @@ To remove noise at the potentiometers, two 10,000 ohm resistors were connected i
   - ADC Readings from potentiometers with one at half-maximum value and the other at max:
 
 <p align="center">
-  <img src="/images/ADCreadingsCROSSTALK1.PNG" alt="Showing no cross-talk" width=400 height=400>
-  <img src="/images/ADCreadingsCROSSTALK2.PNG" alt="Showing no cross talk" width=400 height=400>
+  <img src="./images/ADCreadingsCROSSTALK1.PNG" alt="Showing no cross-talk" width=400 height=400>
+  <img src="./images/ADCreadingsCROSSTALK2.PNG" alt="Showing no cross talk" width=400 height=400>
 </p>
 
 Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
@@ -259,11 +259,11 @@ Cross-talk was initially an issue due to residual charge creating noise in the A
 The USART2 registers were inspected using the debugger to ensure that its registers were properly configured. It was confirmed to work through its use of printing the ADC values.
 
 <p align="center">
-  <img src="/images/USART2_CR1_1.PNG" alt="Showing that CR1 was configured correctly (Part 1)" width=150 >
-  <img src="/images/USART2_CR1_2.PNG" alt="Showing that CR1 was configured correctly (Part 2)" width=150 >
-  <img src="/images/USART2_CR2.PNG" alt="Showing that CR2 was configured correctly" width=150 >
-  <img src="/images/USART2_CR3.PNG" alt="Showing that CR3 was configured correctly" width=150 >
-  <img src="/images/USART2_BRR.PNG" alt="Showing BRR was given the correct value" width=150 >
+  <img src="./images/USART2_CR1_1.PNG" alt="Showing that CR1 was configured correctly (Part 1)" width=150 >
+  <img src="./images/USART2_CR1_2.PNG" alt="Showing that CR1 was configured correctly (Part 2)" width=150 >
+  <img src="./images/USART2_CR2.PNG" alt="Showing that CR2 was configured correctly" width=150 >
+  <img src="./images/USART2_CR3.PNG" alt="Showing that CR3 was configured correctly" width=150 >
+  <img src="./images/USART2_BRR.PNG" alt="Showing BRR was given the correct value" width=150 >
 </p>
 
 The first and second image show that all the correct registers for CR1 were configured. The third and fourth images show that CR2 and CR3 were configured, respectively. The final image on the right shows that BRR had a value of 8333 which is correct since the clock was 80 MHz and the baudrate was 9600.
@@ -272,22 +272,22 @@ The first and second image show that all the correct registers for CR1 were conf
 To test that TIM1 was correctly configured for PWM through 2 channels, the registers were inspected.
 
 <p align="center">
-  <img src="/images/TIM1_BTDR.PNG" alt="Showing that BTDR was configured correctly" width=150 >
-  <img src="/images/TIM1_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
-  <img src="/images/TIM1_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
-  <img src="/images/TIM1_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
-  <img src="/images/TIM1_PSC_ARR.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
+  <img src="./images/TIM1_BTDR.PNG" alt="Showing that BTDR was configured correctly" width=150 >
+  <img src="./images/TIM1_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
+  <img src="./images/TIM1_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
+  <img src="./images/TIM1_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
+  <img src="./images/TIM1_PSC_ARR.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
 </p>
 
 #### Testing TIM2 Input Capture
 To test that TIM1 was correctly configured for Input Capture for the 2 channels, the registers were inspected.
 
 <p align="center">
-  <img src="/images/TIM2_CAPTURE.PNG" alt="Showing that BTDR was configured correctly" width=150 >
-  <img src="/images/TIM2_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
-  <img src="/images/TIM2_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
-  <img src="/images/TIM2_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
-  <img src="/images/TIM2_DIER.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
+  <img src="./images/TIM2_CAPTURE.PNG" alt="Showing that BTDR was configured correctly" width=150 >
+  <img src="./images/TIM2_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
+  <img src="./images/TIM2_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
+  <img src="./images/TIM2_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
+  <img src="./images/TIM2_DIER.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
 </p>
 
 #### Testing if EXTI5 does increment the displayMode counter variable.
@@ -295,25 +295,25 @@ To test if EXTI5 did increment the displayMode counter correctly, a variable wat
 
 ##### Aiming Angle Mode (O)
 <p align="center">
-  <img src="/images/aftercalibration.PNG" alt="displayMode == 0">
-  <img src="/images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display" width = 400>
+  <img src="./images/aftercalibration.PNG" alt="displayMode == 0">
+  <img src="./images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display" width = 400>
 </p>  
 
 ##### Static Wave Mode (1)
 <p align="center">
-  <img src="/images/afterpressingbutton1.PNG" alt="displayMode == 1">
-  <img src="/images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display" width = 400>
+  <img src="./images/afterpressingbutton1.PNG" alt="displayMode == 1">
+  <img src="./images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display" width = 400>
 </p>
 
 ##### Scrolling Wave Mode (2)
 <p align="center">
-  <img src="/images/afterpressingbutton2.PNG" alt="displayMode == 2">
-  <img src="/images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display" width =400>
+  <img src="./images/afterpressingbutton2.PNG" alt="displayMode == 2">
+  <img src="./images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display" width =400>
 </p>
 
 ##### Cycling back to Aiming Angle mode after entering Scrolling Wave mode
 <p align="center">
-  <img src="/images/afterpressingbutton3.PNG" alt="displayMode == 0 after incrementing past 2">
+  <img src="./images/afterpressingbutton3.PNG" alt="displayMode == 0 after incrementing past 2">
 </p>  
 
 The test was successful and after incrementing past two the displayMode successfully returned to displayMode = 0.
