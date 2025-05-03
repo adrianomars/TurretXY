@@ -319,49 +319,96 @@ To test if EXTI5 did increment the displayMode counter correctly, a variable wat
 The test was successful and after incrementing past two the displayMode successfully returned to displayMode = 0.
 
 #### ST7735 Display
-To test if the display worked, the display itself was used along with the debugger and logic analyzer.
+To test if the display worked, the display itself was used along with the debugger to test if everything was working. The logic analyzer was used to inspect the timing of updates from each display mode.
 
-        void initSPI(SPI_TypeDef *spi)
-        {
-        	/*	I/O List
-        		PA7  : SPI1 MOSI : Alternative function 5		
-                PA6  : Reset     : GPIO
-                PA11 : SPI1 MISO : Alternative function 5		
-        		PA5  : SPI1 SCLK : Alternative function 5    
-                PA4  : CS        : GPIO
-        */
-        	int drain;	
-            RCC->APB2ENR |= (1 << 12); // turn on SPI1
-        	// Now configure the SPI interface        
-            pinMode(GPIOA,7,2);        
-            pinMode(GPIOA,1,2); //CHANGED BACK TO 1
-            pinMode(GPIOA,11,2);
-            selectAlternateFunction(GPIOA,7,5);        
-            selectAlternateFunction(GPIOA,1,5); // CHANGED BACK TO 1
-            selectAlternateFunction(GPIOA,11,5);
-        
-        	drain = spi->SR;				// dummy read of SR to clear MODF	
-        	// enable SSM, set SSI, enable SPI, PCLK/2, MSB First Master, Clock = 1 when idle, CPOL=1 (SPI mode 3 overall)   
-        	spi->CR1 = (1 << 9)+(1 << 8)+(1 << 6)+(1 << 2) +(1 << 1) + (1 << 0)+(1 << 3); // Assuming 80MHz default system clock set SPI speed to 20MHz 
-        	spi->CR2 = (1 << 10)+(1 << 9)+(1 << 8); 	// configure for 8 bit operation
-        }
+##### initSPI code
+    void initSPI(SPI_TypeDef *spi)
+    {
+      /*	I/O List
+          PA7  : SPI1 MOSI : Alternative function 5		
+          PA6  : Reset     : GPIO
+          PA11 : SPI1 MISO : Alternative function 5		
+          PA5  : SPI1 SCLK : Alternative function 5    
+          PA4  : CS        : GPIO
+    */
+      int drain;	
+      RCC->APB2ENR |= (1 << 12); // turn on SPI1
+      // Now configure the SPI interface        
+      pinMode(GPIOA,7,2);        
+      pinMode(GPIOA,1,2);
+      pinMode(GPIOA,11,2);
+      selectAlternateFunction(GPIOA,7,5);        
+      selectAlternateFunction(GPIOA,1,5);
+      selectAlternateFunction(GPIOA,11,5);
 
+      drain = spi->SR;				// dummy read of SR to clear MODF	
+      // enable SSM, set SSI, enable SPI, PCLK/2, MSB First Master, Clock = 1 when idle, CPOL=1 (SPI mode 3 overall)   
+      spi->CR1 = (1 << 9)+(1 << 8)+(1 << 6)+(1 << 2) +(1 << 1) + (1 << 0)+(1 << 3); // Assuming 80MHz default system clock set SPI speed to 20MHz 
+      spi->CR2 = (1 << 10)+(1 << 9)+(1 << 8); 	// configure for 8 bit operation
+    }
 > Code block containing the initSPI function used in the code
 
 ##### Using the debugger to test if SPI was initalizing correctly:
   
-  - drain = spi->SR
-<p align="center">
-  <img src="">
-</p> 
+<h3 align="center">SPI Initialization</h3>
 
-  - SPI CR1 and CR2:
-<p align="center">
-  <img src="/images/SPI1_CR1_CR2.PNG">
-</p> 
+<figure style="text-align: center;">
+  <img src="./images/SPI1_CR1_CR2.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
+  <figcaption>CR1 and CR2 Registers</figcaption>
+</figure>
 
-##### Using the Logic analyzer to analyze display updates
-The logic analyzer was used to analyze the three update timing of the different displayMode states 
+##### Testing update timing with the Logic Analyzer
+<h3 align="center">Logic Analyzer: Aiming Angle</h3>
+
+<p align="center">
+  <figure>
+    <img src="./images/dispmode0_90deg.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
+    <figcaption>Panned out view</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode0_90degclktime.PNG" alt="Logic Analyzer Aiming Angle SPI Clock Duration">
+    <figcaption>SPI Clock Duration</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode0_90degUpdatetime.PNG" alt="Logic Analyzer Aiming Angle SPI Total Update Time">
+    <figcaption>Total Update Time</figcaption>
+  </figure>
+</p>
+
+<h3 align="center">Logic Analyzer: Static Wave</h3>
+
+<p align="center">
+  <figure>
+    <img src="./images/dispmode1_90degUpdatetime.PNG" alt="Logic Analyzer Static Wave SPI Total Update Time">
+    <figcaption>Total Update Time</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode1_90deg.PNG" alt="Logic Analyzer Static Wave SPI Full">
+    <figcaption>Panned Out View</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode1_90degclktime.PNG" alt="Logic Analyzer Static Wave SPI Clock Duration">
+    <figcaption>SPI Clock Duration</figcaption>
+  </figure>
+</p>
+
+<h3 align="center">Logic Analyzer: Scrolling Wave</h3>
+
+<p align="center">
+  <figure>
+    <img src="./images/dispmode2_90deg_updatetime.PNG" alt="Logic Analyzer Scrolling Wave SPI Total Update Time">
+    <figcaption>Total Update Time</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode2_90degclktime_1.PNG" alt="Logic Analyzer Scrolling Wave SPI Clock Duration Part 1">
+    <figcaption>SPI Clock Duration Clearing Screen</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/dispmode2_90degclktime_234.PNG" alt="Logic Analyzer Scrolling Wave SPI Clock Duration Part 2">
+    <figcaption>SPI Clock Duration Updating Waves</figcaption>
+  </figure>
+</p>
+The scrolling wave clock pulses show the initial update clearing the screen and the following updates adding the newer updated waveforms ahead. It can be seen that it takes approximately 320 ms for each  before clearing the screen. 
 
 #### USART Registers
 
