@@ -58,6 +58,8 @@ The aim of this project is to program an Nucleo-L432KC and build a circuit, that
 
 - Use Timers to capture inputs to capture PWM signals to use for displaying information on the display.
 
+- Achieve smooth stable range of motion from 0-180 degrees and remove jitter from the servos when they are idle.
+
 > A PWM was chosen instead of a DAC as it is the standard way to control servo motors. DMA was not used as there was no way to apply it within the scope of the project.
 
 # Current Features
@@ -69,13 +71,13 @@ The aim of this project is to program an Nucleo-L432KC and build a circuit, that
 
 - Rolling average smoothes motor movement and deadzones stop the motors from jittering when still due to noise.
 
-- Servo ramp up ensures that the servos start at their minimum angle of 0 degrees.
+- Servo ramp up ensures that the servos start at an angle of 90 degrees for use with a joystick.
 
 - Capable of using an ST7735 display to view duty cycle percentage, aiming angle, and the PWM waveform for both servo motors. PWM highs are shown in green and lows are shown in red for visibility.
 
 - Timers capture both PWM signal's falling and rising edge allowing for information about the PWM signals to be displayed.
 
-- A push button which uses an external interrupt switches between scrolling wave, static wave, and aiming angle display mode.
+- A push button which has a debounce and uses an external interrupt switches between scrolling wave, static wave, and aiming angle display mode.
 
 - UART allows for debugging through the serial monitor using printf(). 
 
@@ -231,8 +233,7 @@ Once the display was working, it was used to test and debug code since it could 
 ## Results
 ### GPIO, Alternate Function Registers, and enabled Peripherals
 
-- Enabled Peripherals
-
+<h4 align="center">Enabled Peripherals</h4>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <img src="./images/AHBxENR.PNG" width = 200>
   <img src="./images/RCC_APB1ENR1.PNG" width = 200>
@@ -242,7 +243,7 @@ Once the display was working, it was used to test and debug code since it could 
 
 All of the peripherals successfully had their clocks enabled.
 
-- GPIO Moder and Alternate Function Registers
+<h4 align="center">GPIO Moder and Alternate Function Registers</h4>
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <img src="./images/PAxRegisters.PNG" width = 200>
@@ -257,28 +258,33 @@ Each GPIO was successfully assigned the appropiate mode and if necessary, altern
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly after the full initialization. Testing the ADC readings was done to ensure that the ADC was not impacted by noise or cross-talk. To test this, ADC values were printed to the serial monitor.
 
 #### ADC Registers after initADC()  
-  - System Clock, VREFEN, PSC, ADC Voltage Regulator, Calibration, and ADC Enabled
+<h4 align="center">System Clock, VREFEN, PSC, ADC Voltage Regulator, Calibration, and ADC Enabled</h4>
 <p align="center">
   <img src="./images/RCC_CCIPR.PNG" alt="RCC->CCIPR">
   <img src="./images/ADC1_COMMON_CCR.PNG" alt="RCC->CCIPR">
   <img src="./images/ADC1_CR.PNG" alt="ADC1->CR">
 </p>
 
-  - ADC Configuration, ADC SQR1, and ADC Sample Cycle Length
+The first image shows that the ADC was enabled in the system clock. The second image shows that VREFEN was enabled, and the PSC was set. The third image shows theat voltage regulator, calibration were successfully set and the ADC was enabled. 
+
+<h4 align="center">ADC Configuration, ADC SQR1, and ADC Sample Cycle Length</h4>
 <p align="center">
   <img src="./images/ADC1_CFGR.PNG" alt="ADC1->CFGR">
   <img src="./images/ADC1_SQR1.PNG" alt="ADC1->SQR1">
   <img src="./images/ADC1_SMPR1.PNG" alt="ADC1->SMPR1">
 </p>
 
+The first image shows that the CFGR was reset, ensuring the correct configuration was used. The second image shows that ADC channel 5 and 15 were enabled and that the length of conversions was 1 (this is two conversions since it is index 1 and the first index is 0). The third image shows that the sampling time was set to 247.5 ADC cycles (done to allow for more accurate and stable conversions).
+
 #### Testing readADC_All
-  - ADC Readings from potentiometers both maximum value:
+
+<h4 align="center">ADC Readings from potentiometers both maximum value</h4>
 
 <p align="center">
   <img src="./images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf" width = 400>
 </p>
 
-  - ADC Readings from potentiometers both at lowest value:
+<h4 align="center">ADC Readings from potentiometers both at lowest value</h4>
 
 <p align="center">
   <img src="./images/ADCreadingsMIN.PNG" alt="Min ADC readings using printf">
@@ -286,7 +292,7 @@ To test that the dual channel ADC initialized, the debugger was used to check th
 
 To remove noise at the potentiometers, two 10,000 ohm resistors were connected in parallel to the wire connecting to the pins the ADC was reading from and connected to ground. This removed noise and allowed for a consistent minimum value of 0 from the ADC.
 
-  - ADC Readings from potentiometers with one at half-maximum value and the other at max:
+<h4 align="center">ADC Readings from potentiometers with one at half-maximum value and the other at max</h4>
 
 <p align="center">
   <img src="./images/ADCreadingsCROSSTALK1.PNG" alt="Showing no cross-talk" width=400 height=400>
@@ -297,6 +303,8 @@ Cross-talk was initially an issue due to residual charge creating noise in the A
 
 ### Testing USART2 Tx
 The USART2 registers were inspected using the debugger to ensure that its registers were properly configured. It was confirmed to work through its use of printing the ADC values.
+
+<h4 align="center">USART2 Registers</h4>
 
 <p align="center">
   <img src="./images/USART2_CR1_1.PNG" alt="Showing that CR1 was configured correctly (Part 1)" width=150 >
@@ -310,6 +318,8 @@ The first and second image show that all the correct registers for CR1 were conf
 ### Testing the Timers
 #### TIM1 (PWM Output)
 To test that TIM1 was correctly configured for PWM through 2 channels, the registers were inspected.
+
+<h4 align="center">TIM1 Registers</h4>
 
 <p align="center">
   <img src="./images/TIM1_BTDR.PNG" alt="Showing that BTDR was configured correctly" width=150 >
@@ -349,14 +359,16 @@ To test that TIM1 was correctly configured for PWM through 2 channels, the regis
 
 
 #### TIM2 (Input Capture)
-To test that TIM1 was correctly configured for Input Capture for the 2 channels, the registers were inspected. The logic analyzer was also used to test the signal being measured at the inputs to the TIM2 Input Capture
+To test that TIM1 was correctly configured for Input Capture for the 2 channels, the registers were inspected. The logic analyzer was also used to test the signal being captured at the inputs to the TIM2 Input Capture
+
+<h4 align="center">TIM2 Registers</h4>
 
 <p align="center">
   <img src="./images/TIM2_PSC_ARR.PNG" alt="Showing that PSC and ARR were set correctly" width=150 >
   <img src="./images/TIM2_CCER.PNG" alt="Showing that CCER was configured correctly" width=150 >
   <img src="./images/TIM2_CCMR1.PNG" alt="Showing that CCMR1 was configured correctly" width=150 >
   <img src="./images/TIM2_CR1.PNG" alt="Showing that CR1 was configured correctly" width=150 >
-  <img src="./images/TIM2_DIER.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
+  <img src="./images/TIM2_DIER.PNG" alt="Showing DIER" width=150 >
 </p>
 
 BDTR was enabled which meant the main output was enabled for TIM1. CC1E and CC2E were both set so PWM was enabled on channels 1 and 2. CCMR1 was set correctly and channels 1 and 2 were set to PWM mode with preload enabled. CR1 shows the timer is running and counting up with ARR preload enabled. PSC scaled the timer down to 50 kHz and the ARR set the period as every 20 ms which is correct for PWM.
@@ -397,6 +409,8 @@ There was a small difference between the maximum and minimum duty cycle percenta
 To test if EXTI5 did increment the displayMode counter correctly, a variable watcher was used during the debugger and pictures were taken of the display to show that it worked successfully.
 
 ##### Aiming Angle Mode (O)
+<h4 align="center">Comparing variable watcher and what is displayed (State 0)</h4>
+
 <p align="center">
   <img src="./images/aftercalibration.PNG" alt="displayMode == 0">
   <img src="./images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display" width = 400>
@@ -405,6 +419,9 @@ To test if EXTI5 did increment the displayMode counter correctly, a variable wat
 The display started at aiming angle mode when the board was powered.
 
 ##### Static Wave Mode (1)
+
+<h4 align="center">Comparing variable watcher and what is displayed (State 1)</h4>
+
 <p align="center">
   <img src="./images/afterpressingbutton1.PNG" alt="displayMode == 1">
   <img src="./images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display" width = 400>
@@ -413,6 +430,8 @@ The display started at aiming angle mode when the board was powered.
 The display changed to static wave mode when the displayMode value was incremented to a value of 1.
 
 ##### Scrolling Wave Mode (2)
+<h4 align="center">Comparing variable watcher and what is displayed (State 2)</h4>
+
 <p align="center">
   <img src="./images/afterpressingbutton2.PNG" alt="displayMode == 2">
   <img src="./images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display" width =400>
@@ -421,6 +440,8 @@ The display changed to static wave mode when the displayMode value was increment
 The display changed to scrolling wave mode when the displayMode value was incremented to a value of 2.
 
 ##### Cycling back to Aiming Angle mode after entering Scrolling Wave mode
+<h4 align="center">Variable watcher showing succesful cycle from State 2 to State 0</h4>
+
 <p align="center">
   <img src="./images/afterpressingbutton3.PNG" alt="displayMode == 0 after incrementing past 2">
 </p>  
@@ -464,6 +485,8 @@ To test if the display worked, the display itself was used along with the debugg
 <p align="center">
   <img src="./images/SPI1_CR1_CR2.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
 </p>
+
+All SPI registers were set correctly.
 
 <p align="center"><em>CR1 and CR2 Registers</em></p>
 
@@ -523,10 +546,10 @@ To test if the display worked, the display itself was used along with the debugg
 The scrolling wave clock pulses show the initial update clearing the screen and the following updates adding the newer updated waveforms ahead. It can be seen that it takes approximately 320 ms for each before clearing the screen. 
 
 ## Conclusion
-The project was a success and all objectives were achieved. The jitteriness of the servos was tackled using a rolling average and a deadzone to stop noise affecting the motors while they were idle. Of
+The project was a success and all objectives were achieved. The jitteriness of the servos was tackled using a rolling average and a deadzone to stop noise affecting the motors while they were idle. A circuit was made which connected the Nucleo L432KC to two servos and powered the servos. The L432KC was also programmed so that it could control the two servo motors through PWM. SPI was successfully used to send data to the display and showed information on the duty percentage, angle of each servo, and had the option to display the PWM wave for easier debugging.
 
 ## Future Work
-If possible TIM2 should be used as a slave to TIM1 so that they update synchronously rather than waiting for TIM2 to detect a rising or falling edge. For the potentiometers, instead of using 10 kOhm resistors to send noise to ground, 4.7 kOhm resistors could be used instead to reduce noise even further. For the deadzone, instead of using a single boundary for the deadzone, two boundarys could be used for hystersis so that if a user was able to consistently keep the ADC count absolute difference near the boundary that it would not jump between the two deadzone strengths. More external interrupts could also be added with push buttons to toggle the use of deadzone or rolling average. 
+If possible TIM2 should be used as a slave to TIM1 so that they update synchronously rather than waiting for TIM2 to detect a rising or falling edge. For the potentiometers, instead of using 10 kOhm resistors to send noise to ground, 4.7 kOhm resistors could be used instead to reduce noise even further. For the deadzone, instead of using a single boundary for the deadzone, two boundarys could be used for hystersis so that if a user was able to consistently keep the ADC count absolute difference near the boundary that it would not jump between the two deadzone strengths. More external interrupts could also be added with push buttons to toggle the use of deadzone or rolling average. Finally, servos with 360 degrees of rotation, a joystick, and conversion to the code to accomodate these changes should be added to make the design more intuitive.
 
 ## Video Demo of the Project
 This video shows a demonstration of all of the features working in the project as of 2/5/2025
