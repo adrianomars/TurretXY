@@ -198,13 +198,24 @@ The procedure is as follows:
 > This is the code used for printing the ADC processed/unprocessed readings
 
 ### Results
-#### GPIO and Alternate Function Registers
+#### GPIO, Alternate Function Registers, and enabled Peripherals
+
+- Enabled Peripherals
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <img src="/images/AHBxENR.PNG" width = 200>
   <img src="/images/RCC_APB1ENR1.PNG" width = 200>
   <img src="/images/RCC_APB1ENR2.PNG" width = 200>
   <img src="/images/RCC_APB2ENR.PNG" width = 200>
+</div>
+
+- GPIO Moder and Alternate Function Registers
+
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+  <img src="/images/PAxRegisters.PNG" width = 200>
+  <img src="/images/PAxRegistersAF.PNG" width = 200>
+  <img src="/images/PBxRegisters.PNG" width = 200>
+  <img src="/images/PBxRegistersAF.PNG" width = 200>
 </div>
 
 #### Dual channel ADC initialization and readings
