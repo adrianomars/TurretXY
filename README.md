@@ -351,12 +351,12 @@ To test if the display worked, the display itself was used along with the debugg
 ##### Using the debugger to test if SPI was initalizing correctly:
   
 <h3 align="center">SPI Initialization</h3>
-
-<figure style="text-align: center;">
-  <img src="./images/SPI1_CR1_CR2.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
-  <figcaption>CR1 and CR2 Registers</figcaption>
-</figure>
-
+<p>
+  <figure style="text-align: center;">
+    <img src="./images/SPI1_CR1_CR2.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
+    <figcaption>CR1 and CR2 Registers</figcaption>
+  </figure>
+</p>
 ##### Testing update timing with the Logic Analyzer
 <h3 align="center">Logic Analyzer: Aiming Angle</h3>
 
