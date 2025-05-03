@@ -274,21 +274,25 @@ The USART2 registers were inspected using the debugger.
 #### Testing if EXTI5 does increment the displayMode counter variable.
 To test if EXTI5 did increment the displayMode counter correctly, a variable watcher was used during the debugger and pictures were taken of the display to show that it worked successfully.
 
+##### Aiming Angle Mode (O)
 <p align="center">
   <img src="/images/aftercalibration.PNG" alt="displayMode == 0">
-  <img src="/images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display">
+  <img src="/images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display" width = 400>
 </p>  
 
+##### Static Wave Mode (1)
 <p align="center">
   <img src="/images/afterpressingbutton1.PNG" alt="displayMode == 1">
-  <img src="/images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display">
+  <img src="/images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display" width = 400>
 </p>
 
+##### Scrolling Wave Mode (2)
 <p align="center">
   <img src="/images/afterpressingbutton2.PNG" alt="displayMode == 2">
-  <img src="/images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display">
+  <img src="/images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display" width =400>
 </p>
 
+##### Cycling back to Aiming Angle mode after entering Scrolling Wave mode
 <p align="center">
   <img src="/images/afterpressingbutton3.PNG" alt="displayMode == 0 after incrementing past 2">
 </p>  
