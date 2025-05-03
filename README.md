@@ -201,10 +201,10 @@ The procedure is as follows:
 #### GPIO and Alternate Function Registers
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-  <img src="/images/AHBxENR.PNG">
-  <img src="/images/RCC_APB1ENR1.PNG">
-  <img src="/images/RCC_APB1ENR2.PNG">
-  <img src="/images/RCC_APB2ENR.PNG">
+  <img src="/images/AHBxENR.PNG" width = 200>
+  <img src="/images/RCC_APB1ENR1.PNG" width = 200>
+  <img src="/images/RCC_APB1ENR2.PNG" width = 200>
+  <img src="/images/RCC_APB2ENR.PNG" width = 200>
 </div>
 
 #### Dual channel ADC initialization and readings
