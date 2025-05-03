@@ -367,6 +367,6 @@ This video shows a demonstration of all of the features working in the project a
 
 <p align="center">
   <a href="">
-    <img src="" alt="Video Demonstration of the TurretXY working">
+    <img src="https://youtu.be/Jf0AD8lkRCE" alt="Video Demonstration of the TurretXY working">
   </a>
 </p>
