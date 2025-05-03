@@ -219,32 +219,37 @@ The procedure is as follows:
 </div>
 
 #### Dual channel ADC initialization and readings
-To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly. Testing the ADC readings involved printing the ADC values to the serial monitor.
+To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly after the full initialization. Testing the ADC readings involved printing the ADC values to the serial monitor.
 
 ##### ADC Registers after initADC()  
-  - 
+  - System Clock
 <p align="center">
-  <img src="" alt="">
+  <img src="/images/RCC_CCIPR.PNG" alt="RCC->CCIPR">
 </p>
 
-  - 
+  - VREFEN and PSC
 <p align="center">
-  <img src="" alt="RCC->CCIPR">
+  <img src="/images/ADC1_COMMON_CCR.PNG" alt="RCC->CCIPR">
 </p>
 
-  - 
+  - ADC Voltage Regulator, Calibration, and ADC Enabled
 <p align="center">
-  <img src="" alt="">
+  <img src="/images/ADC1_CR.PNG" alt="ADC1->CR">
 </p>
 
-  - ADC1->CR:
+  - ADC Configuration
 <p align="center">
-  <img src="" alt="">
+  <img src="/images/ADC1_CFGR.PNG" alt="ADC1->CFGR">
 </p>
 
-  - ADC1->CFGR:
+  - ADC SQR1
 <p align="center">
-  <img src="" alt="ADC1->CFGR">
+  <img src="/images/ADC1_SQR1.PNG" alt="ADC1->SQR1">
+</p>
+
+ - ADC Sample Cycle Length
+ <p align="center">
+  <img src="/images/ADC1_SMPR1.PNG" alt="ADC1->SMPR1">
 </p>
 
 ##### Testing readADC_All
