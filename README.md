@@ -272,24 +272,28 @@ The USART2 registers were inspected using the debugger.
 
 
 #### Testing if EXTI5 does increment the displayMode counter variable.
+To test if EXTI5 did increment the displayMode counter correctly, a variable watcher was used during the debugger and pictures were taken of the display to show that it worked successfully.
 
 <p align="center">
-  <img src="" alt="displayMode == 0">
+  <img src="/images/aftercalibration.PNG" alt="displayMode == 0">
+  <img src="/images/displayShowingAimingAngle.jpg" alt="displayMode == 0 on Display">
 </p>  
 
 <p align="center">
-  <img src="" alt="displayMode == 1">
+  <img src="/images/afterpressingbutton1.PNG" alt="displayMode == 1">
+  <img src="/images/displayShowingStaticWave.jpg" alt="displayMode == 1 on Display">
 </p>
 
 <p align="center">
-  <img src="" alt="displayMode == 2">
+  <img src="/images/afterpressingbutton2.PNG" alt="displayMode == 2">
+  <img src="/images/displayShowingScrollingWave.jpg" alt="displayMode == 2 on Display">
 </p>
 
 <p align="center">
-  <img src="" alt="displayMode cycles back to 0 after incrementing past displayMode == 2">
+  <img src="/images/afterpressingbutton3.PNG" alt="displayMode == 0 after incrementing past 2">
 </p>  
 
-The test was successful and after incrementing past two the displayMode successfully return to displayMode = 0.
+The test was successful and after incrementing past two the displayMode successfully returned to displayMode = 0.
 
 #### ST7735 Display
 To test if the display worked, the display itself was used along with the debugger and logic analyzer.
