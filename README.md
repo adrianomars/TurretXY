@@ -209,6 +209,8 @@ The procedure is as follows:
   <img src="/images/RCC_APB2ENR.PNG" width = 200>
 </div>
 
+All of the peripherals successfully had their clocks enabled.
+
 - GPIO Moder and Alternate Function Registers
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
@@ -217,6 +219,7 @@ The procedure is as follows:
   <img src="/images/PBxRegisters.PNG" width = 200>
   <img src="/images/PBxRegistersAF.PNG" width = 200>
 </div>
+Each GPIO was successfully assigned the appropiate mode and if necessary, alternate functions.
 
 #### Dual channel ADC initialization and readings
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly after the full initialization. Testing the ADC readings involved printing the ADC values to the serial monitor.
@@ -266,7 +269,6 @@ To test that the dual channel ADC initialized, the debugger was used to check th
 </p>
 
 To remove noise at the potentiometers, two 10,000 ohm resistors were connected in parallel to the wire connecting to the pins the ADC was reading from and connected to ground. This removed noise and allowed for a consistent minimum value of 0 from the ADC.
-
 
   - ADC Readings from potentiometers with one at half-maximum value and the other at max:
 
@@ -382,9 +384,10 @@ From this it can be seen that data was being sent through the SDA pin on the ST7
 
 
 ## Conclusion
+The project was a success and all objectives were achieved. The jitteriness of the servos was tackled using a rolling average and a deadzone to stop noise affecting the motors while they were idle. 
 
 ## Video Demo of the Project
-This video shows a demonstration of all of the features working in the project as of 22/03/2025
+This video shows a demonstration of all of the features working in the project as of 2/5/2025
 
 <p align="center">
   <a href="">
