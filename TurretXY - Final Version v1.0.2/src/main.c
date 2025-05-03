@@ -145,7 +145,7 @@ int main()
         if (!calibrated)
             {
                 servo_startup_ramp_stepper();
-            }
+            }  
 
         uint16_t pot1_now = 0;
         uint16_t pot2_now = 0;
@@ -275,17 +275,23 @@ void initADC(void)
 // Read ADC channel 5 and channel 15
 void readADC_All(uint16_t *pot1_val, uint16_t *pot2_val)
 {
+    // ---- Read channel 5 ----
+    ADC1->SQR1 = (5 << 6); // Set ADC to read channel 5
     ADC1->ISR |= (1 << 3); // Clear EOS flag
     ADC1->CR |= (1 << 2); // Start conversion
+    while (!(ADC1->ISR & (1 << 2))); // Wait for EOC
+    *pot1_val = ADC1->DR; // Read result
+    ADC1->ISR |= (1 << 2); // Clear EOC
 
-    while (!(ADC1->ISR & (1 << 2))); // Wait for conversion
-    *pot1_val = ADC1->DR; // Read first channel (PA0 Channel 5)
-    ADC1->ISR |= (1 << 2); // Clear EOC flag
-
-    while (!(ADC1->ISR & (1 << 2))); // Wait for conversion to complete
-    *pot2_val = ADC1->DR; // Read second channel (PB0 Channel 15)
-    ADC1->ISR |= (1 << 2); // Clear EOC flag
+    // ---- Read channel 15 ----
+    ADC1->SQR1 = (15 << 6); // Set ADC to read channel 15
+    ADC1->ISR |= (1 << 3); // Clear EOS flag
+    ADC1->CR |= (1 << 2); // Start conversion
+    while (!(ADC1->ISR & (1 << 2))); // Wait for EOC
+    *pot2_val = ADC1->DR; // Read result
+    ADC1->ISR |= (1 << 2); // Clear EOC
 }
+
 
 // PWM Output for Servos
 void initTIM1_PWM_Servo(void)
