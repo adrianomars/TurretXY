@@ -197,6 +197,9 @@ The procedure is as follows:
   
 > This is the code used for printing the ADC processed/unprocessed readings
 
+#### Using the display
+Once the display was working, it was used to test and debug code since it could display values similar to printf. It was also much easier to code the displayFunction by visually understanding what the code was doing.
+
 ### Results
 #### GPIO, Alternate Function Registers, and enabled Peripherals
 
