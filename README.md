@@ -366,7 +366,7 @@ The project was a success and all objectives were achieved. The jitteriness of t
 This video shows a demonstration of all of the features working in the project as of 2/5/2025
 
 <p align="center">
-  <a href="">
+  <a href="https://youtu.be/Jf0AD8lkRCE">
     <img src="https://youtu.be/Jf0AD8lkRCE" alt="Video Demonstration of the TurretXY working">
   </a>
 </p>
