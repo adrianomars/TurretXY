@@ -216,33 +216,17 @@ Each GPIO was successfully assigned the appropiate mode and if necessary, altern
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly after the full initialization. Testing the ADC readings involved printing the ADC values to the serial monitor.
 
 ##### ADC Registers after initADC()  
-  - System Clock
+  - System Clock, VREFEN, PSC, ADC Voltage Regulator, Calibration, and ADC Enabled
 <p align="center">
   <img src="/images/RCC_CCIPR.PNG" alt="RCC->CCIPR">
-</p>
-
-  - VREFEN and PSC
-<p align="center">
   <img src="/images/ADC1_COMMON_CCR.PNG" alt="RCC->CCIPR">
-</p>
-
-  - ADC Voltage Regulator, Calibration, and ADC Enabled
-<p align="center">
   <img src="/images/ADC1_CR.PNG" alt="ADC1->CR">
 </p>
 
-  - ADC Configuration
+  - ADC Configuration, ADC SQR1, and ADC Sample Cycle Length
 <p align="center">
   <img src="/images/ADC1_CFGR.PNG" alt="ADC1->CFGR">
-</p>
-
-  - ADC SQR1
-<p align="center">
   <img src="/images/ADC1_SQR1.PNG" alt="ADC1->SQR1">
-</p>
-
- - ADC Sample Cycle Length
- <p align="center">
   <img src="/images/ADC1_SMPR1.PNG" alt="ADC1->SMPR1">
 </p>
 
