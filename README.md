@@ -169,18 +169,6 @@ The procedure is as follows:
 6. Run the code on the board if it is not running yet and click run in sigrok pulseview.
 7. Analzye the signal using the cursors available to see the timing of signal pulses and use the built-in decoder to read how it interprets each pulse.
 
-![PWM Signal Duty Cycle Changing](notechange.png)
-
-> Image showing testing of PWM signal from PA9 during a duty cycle update.
-
-![PWM Signal During Pausestate](pwmpausestate.png)
-
->Image showing the PWM being tested if it stops during a pause state.
-
-![Checking if 500ms delay affects the SPI communications](spidelay.png)
-
-> Image showing testing of SPI signal, checking if the 500ms delay is working inbetween refreshes
-
 #### Printf using USART Procedure
 The function printf() transmitted serial data through to the serial monitor which was used for debugging. This was used for displaying changes in measured inputs.
 
@@ -222,7 +210,7 @@ All of the peripherals successfully had their clocks enabled.
   <img src="/images/PBxRegisters.PNG" width = 200>
   <img src="/images/PBxRegistersAF.PNG" width = 200>
 </div>
-Each GPIO was successfully assigned the appropiate mode and if necessary, alternate functions.
+Each GPIO was successfully assigned the appropiate mode and if necessary, alternate functions too.
 
 #### Dual channel ADC initialization and readings
 To test that the dual channel ADC initialized, the debugger was used to check that each register was configured correctly after the full initialization. Testing the ADC readings involved printing the ADC values to the serial monitor.
@@ -283,7 +271,15 @@ To remove noise at the potentiometers, two 10,000 ohm resistors were connected i
 Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
 
 #### Testing USART2 Tx
+The USART2 registers were inspected using the debugger.
 
+<p align="center">
+  <img src="/images/USART2_CR1_1.PNG" alt="Showing no cross-talk" width=150 >
+  <img src="/images/USART2_CR1_2.PNG" alt="Showing no cross talk" width=150 >
+  <img src="/images/USART2_CR2.PNG" alt="Showing no cross-talk" width=150 >
+  <img src="/images/USART2_CR3.PNG" alt="Showing no cross talk" width=150 >
+  <img src="/images/USART2_BRR.PNG" alt="Showing no cross talk" width=150 >
+</p>
 
 #### Testing TIM1 PWM
 
@@ -367,6 +363,6 @@ This video shows a demonstration of all of the features working in the project a
 
 <p align="center">
   <a href="https://youtu.be/Jf0AD8lkRCE">
-    <img src="https://youtu.be/Jf0AD8lkRCE" alt="Video Demonstration of the TurretXY working">
+    <img src="https://img.youtube.com/vi/Jf0AD8lkRCE/0.jpg" alt="Video Demonstration of the TurretXY working">
   </a>
 </p>
