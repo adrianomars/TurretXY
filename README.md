@@ -277,6 +277,15 @@ To remove noise at the potentiometers, two 10,000 ohm resistors were connected i
 
 Cross-talk was initially an issue due to residual charge creating noise in the ADC when switching between channel 5 and channel 15. To solve this, first the ADC's sampling time was configured in the registers to to be longer so that the charge could dissipate but this only mitigated the problem slightly. To solve this issue completely, a 100nF ceramic disc capacitor was used to let the charge disipate quickly to the ground pin.
 
+#### Testing USART2 Tx
+
+
+#### Testing TIM1 PWM
+
+
+#### Testing TIM2 Input Capture
+
+
 #### Testing if EXTI5 does increment the displayMode counter variable.
 
 <p align="center">
@@ -368,6 +377,9 @@ These are all from the same logic analyzer recording
   ![image]()
 
 From this it can be seen that data was being sent through the SDA pin on the ST7735 LCD display to update it
+
+#### USART Registers
+
 
 ## Conclusion
 
