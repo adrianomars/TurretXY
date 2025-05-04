@@ -216,7 +216,7 @@ The function printf() transmitted serial data through to the serial monitor whic
 
 The procedure is as follows:
 1. The functions to enable and use USART on the board were put into the main file for the code. In the code provided for this project these functions are called initSerial(), _write(), and eputc().
-> NOTE: USART2 uses PA2 for transmitting information. There are other ports which can send 
+> NOTE: USART2 uses PA2 for transmitting information.
 2. Choose the variable which is suspected to be not updating correctly in the code
 3. Go to main and create a while loop which uses printf() to print the variable (repeat this print multiple times if necessary to show iterative updates and use delays to make it more readable).
 4. Go to the serial monitor and watch as the code runs. If needed this can be done in conjunction with the debugger.
