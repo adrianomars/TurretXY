@@ -278,11 +278,36 @@ The first image shows that the CFGR was reset, ensuring the correct configuratio
 
 #### Testing readADC_All
 
+###### readADC_All Function Code
+    // Read ADC channel 5 and channel 15
+    void readADC_All(uint16_t *pot1_val, uint16_t *pot2_val)
+    {
+        // Read channel 5
+        ADC1->SQR1 = (5 << 6); // Set ADC to read channel 5
+        ADC1->ISR |= (1 << 3); // Clear EOS flag
+        ADC1->CR |= (1 << 2); // Start conversion
+        while (!(ADC1->ISR & (1 << 2))); // Wait for EOC
+        *pot1_val = ADC1->DR; // Read result
+        ADC1->ISR |= (1 << 2); // Clear EOC
+
+        // Read channel 15
+        ADC1->SQR1 = (15 << 6); // Set ADC to read channel 15
+        ADC1->ISR |= (1 << 3); // Clear EOS flag
+        ADC1->CR |= (1 << 2); // Start conversion
+        while (!(ADC1->ISR & (1 << 2))); // Wait for EOC
+        *pot2_val = ADC1->DR; // Read result
+        ADC1->ISR |= (1 << 2); // Clear EOC
+    }
+
 <h4 align="center">ADC Readings from potentiometers both maximum value</h4>
 
 <p align="center">
   <img src="./images/ADCreadingsMAXED.PNG" alt="Max ADC values using printf" width = 400>
 </p>
+
+The maximum values were seen to be extremely close to each other, but neither reached the maximum value of 4095 when both were set to max. When one dropped to zero, the other would shoot up and then drop to its previous max ADC reading. The reason for this was that two seperate wires (both connected to a 3.3V rail) were used to supply power to each potentiometer causing the voltages to be very slightly different from each other. When one potentiometers resistance was decreased, more voltage would go to the other one briefly before stabilizing. This was not heavily impactful on the accuracy of the PWM as the code uses the pot_to_servo function to place a maximum ADC value of 4000 to ensure consistency.
+
+> The use of seperate wires for powering each potentiometer was due to the seperate breadboard that the potentiometers and push button were on, as it had a split positive rail design. For this project it was meant to act like a handheld controller and to create seperate 5V and 3.3V rails but retrospectively, a single breadboard with a positive rail would have achieved greater accuracy.
 
 <h4 align="center">ADC Readings from potentiometers both at lowest value</h4>
 
@@ -329,37 +354,44 @@ To test that TIM1 was correctly configured for PWM through 2 channels, the regis
   <img src="./images/TIM1_PSC_ARR.PNG" alt="Showing that PSC and ARR contained the correct values" width=150 >
 </p>
 
+BDTR was enabled which meant the main output was enabled for TIM1. CC1E and CC2E were both set so PWM was enabled on channels 1 and 2. CCMR1 was set correctly and channels 1 and 2 were set to PWM mode with preload enabled. CR1 shows the timer is running and counting up with ARR preload enabled. PSC scaled the timer down to 50 kHz and the ARR set the period as every 20 ms which is correct for PWM.
+
 <h5 align="center">TIM1 Logic Analyzer</h5>
 
 <h6 align="center">Servo X set to 3% duty, Servo Y set to 11% duty</h6>
 
 <p align="center">
   <figure>
-    <img src="./images/full180pwmlowx.PNG" alt="Logic Analyzer TIM1 Min X">
-    <figcaption>TIM1 PWM Output Minimum X</figcaption>
+    <img src="./images/TIM1_PWM_MINX.png" alt="Logic Analyzer TIM1 Min X">
+    <figcaption>TIM1 PWM Output Minimum Percentage Duty Cycle X</figcaption>
   </figure>
   <figure>
-    <img src="./images/full180pwmhighy.PNG" alt="Logic Analyzer TIM1 Max Y">
-    <figcaption>TIM1 PWM Output Maximum Y</figcaption>
+    <img src="./images/TIM1_PWM_MAXY.png" alt="Logic Analyzer TIM1 Max Y">
+    <figcaption>TIM1 PWM Output Maximum Percentage Duty Cycle Y</figcaption>
   </figure>
 </p>
+
+When the percentage duty cycle was adjusted so that the PWM coming from PA9 (Servo X) was at the minimum percentage duty cycle and PA8 (Servo Y) was at the maximum percentage duty cycle (3.02% and 11.8% respectively), the PWM duty cycle time was approximately 0.611 ms long for PA9 amd 2.39 ms long for PA8.
 
 <h6 align="center">Servo Y set to 3% duty, Servo X set to 11% duty</h6>
 
 <p align="center">
   <figure>
-    <img src="./images/full180pwmhighx.PNG" alt="Logic Analyzer TIM1 Max X">
-    <figcaption>TIM1 PWM Output Maximum X</figcaption>
+    <img src="./images/TIM1_PWM_MAXX.png" alt="Logic Analyzer TIM1 Max X">
+    <figcaption>TIM1 PWM Output Maximum Percentage Duty Cycle X</figcaption>
   </figure>
   <figure>
-    <img src="./images/full180pwmlowy.PNG" alt="Logic Analyzer TIM1 Min Y">
-    <figcaption>TIM1 PWM Output Minimum Y</figcaption>
+    <img src="./images/TIM1_PWM_MINY.png" alt="Logic Analyzer TIM1 Min Y">
+    <figcaption>TIM1 PWM Output Minimum Percentage Duty Cycle Y</figcaption>
   </figure>
 </p>
 
+When the percentage duty cycle was adjusted so that the PWM coming from PA9 was the maximum percentage duty cycle and PA8 was at the minimum percentage duty cycle, the PWM duty cycle time was approximately 2.38 ms for PA9 and 0.611 ms for PA8.
+
+The duty cycle timing was slightly different for each signal being sent to the servo, but this did not impact the maximum range as it was limited to 4000 ADC counts.
 
 #### TIM2 (Input Capture)
-To test that TIM1 was correctly configured for Input Capture for the 2 channels, the registers were inspected. The logic analyzer was also used to test the signal being captured at the inputs to the TIM2 Input Capture
+To test that TIM2 was correctly configured for Input Capture for the 2 channels, the registers were inspected. The logic analyzer was also used to test the signal being captured at the inputs to the TIM2 Input Capture
 
 <h4 align="center">TIM2 Registers</h4>
 
@@ -371,33 +403,37 @@ To test that TIM1 was correctly configured for Input Capture for the 2 channels,
   <img src="./images/TIM2_DIER.PNG" alt="Showing DIER" width=150 >
 </p>
 
-BDTR was enabled which meant the main output was enabled for TIM1. CC1E and CC2E were both set so PWM was enabled on channels 1 and 2. CCMR1 was set correctly and channels 1 and 2 were set to PWM mode with preload enabled. CR1 shows the timer is running and counting up with ARR preload enabled. PSC scaled the timer down to 50 kHz and the ARR set the period as every 20 ms which is correct for PWM.
+The first image shows that TIM2 is set to prescale 80 MHz to 1 MHz so that it ticks every microsecond. It also has the largest ARR possible since the timer should run continously to timestamp when rising and falling edges occur. The second image shows that channel 1 and 2 are are set to capture on the rising edge. The third image shows that registers are set so that every edge is captured with no filter. In the fourth image both channels have input capture enabled and for rising edge only. The fifth image shows that DIER is set so that interrupts are enabled during capture events. 
 
 <h5 align="center">TIM2 Logic Analyzer</h5>
+
+> The wrong labels were used in the screenshots of the sigrok pulseview application, but the signals were taken from the TIM2 pins.
 
 <h6 align="center">Servo X set to 3% duty, Servo Y set to 11% duty</h6>
 
 <p align="center">
   <figure>
     <img src="./images/TIM2_Input_Capture_Xmin_dutytime.PNG" alt="Logic Analyzer TIM2 Min X">
-    <figcaption>TIM2 Input Capture Minimum X</figcaption>
+    <figcaption>TIM2 Input Capture Minimum Percentage Duty Cycle X</figcaption>
   </figure>
   <figure>
     <img src="./images/TIM2_Input_Capture_Ymax_dutytime.PNG" alt="Logic Analyzer TIM2 Max Y">
-    <figcaption>TIM2 Input Capture Maximum Y</figcaption>
+    <figcaption>TIM2 Input Capture Maximum Percentage Duty Cycle Y</figcaption>
   </figure>
 </p>
+
+The input captures through the TIM2 channels can only capture up to microseconds due to the TIM2 clock being prescaled to 1 MHz. This means that when any edge is detected, the timer must wait for the next tick to capture the edge. This explains why the 
 
 <h6 align="center">Servo Y set to 3% duty, Servo X set to 11% duty</h6>
 
 <p align="center">
   <figure>
     <img src="./images/TIM2_Input_Capture_Ymin_dutytime.PNG" alt="Logic Analyzer TIM2 Min X">
-    <figcaption>SPI Clock Duration Clearing Screen</figcaption>
+    <figcaption>TIM2 Input Capture Minimum Percentage Duty Cycle Y</figcaption>
   </figure>
   <figure>
     <img src="./images/TIM2_Input_Capture_Xmax_dutytime.PNG" alt="Logic Analyzer TIM2 Max Y">
-    <figcaption>SPI Clock Duration Updating Waves</figcaption>
+    <figcaption>TIM2 Input Capture Maximum Percentage Duty Cycle X</figcaption>
   </figure>
 </p>
 
@@ -486,11 +522,12 @@ To test if the display worked, the display itself was used along with the debugg
   <img src="./images/SPI1_CR1_CR2.PNG" alt="Logic Analyzer Aiming Angle SPI Full">
 </p>
 
-All SPI registers were set correctly.
-
 <p align="center"><em>CR1 and CR2 Registers</em></p>
 
+The CR1 register was configured to enable software slave management, enable SSI, enable SPI, set PCLK/4, set MSB first, set master mode, set clock to 1 when idle, and set to SPI mode 3.
+
 ##### Testing update timing with the Logic Analyzer
+The updata timing and data transfer was tested using the logic analyzer to understand how timing and data transfers would be impacted by clearing the screen, updating the visuals, and writing calculated duty percentage and angle to the screen.
 
 <h3 align="center">Logic Analyzer: Aiming Angle</h3>
 
@@ -509,6 +546,8 @@ All SPI registers were set correctly.
   </figure>
 </p>
 
+The aiming angle clock duration lasts for 29.7 ms with a small portion fo data being transferred at the beginning and the majority at the end. The entire cycle takes 102.69 ms. There is less data that is transferred per update in this display mode as the dials do not take require much pixels to be drawn to show up on the display.
+
 <h3 align="center">Logic Analyzer: Static Wave</h3>
 
 <p align="center">
@@ -525,6 +564,8 @@ All SPI registers were set correctly.
     <figcaption>SPI Clock Duration</figcaption>
   </figure>
 </p>
+
+The static wave clock pulses show that the clock duration is 20.2 ms and that most data is transmitted to the display at the start and the end of the clock pulses. The large data transfers are likely due to clearing the screen and drawing the waves for each servo. The entire cycle takes 92.4 ms to completely update the display.
 
 <h3 align="center">Logic Analyzer: Scrolling Wave</h3>
 
@@ -543,7 +584,9 @@ All SPI registers were set correctly.
   </figure>
 </p>
 
-The scrolling wave clock pulses show the initial update clearing the screen and the following updates adding the newer updated waveforms ahead. It can be seen that it takes approximately 320 ms for each before clearing the screen. 
+The scrolling wave clock pulses show the initial update clearing the screen and the following updates adding the newer updated waveforms ahead. It can be seen that it takes approximately 320 ms for each before the next cycle clears the screen again so new waves can be written. Updating the 
+
+To reduce the impact of clearing the display, the display should be cleared in sections and not all at once as this will require a large data transfer. Resetting the whole screen requires 12800 pixels to be transferred since the display is an 80x160 screen. Doing this every 100 ms is intensive and makes the screen flicker as it attempts to transfer all those pixels in one block. In the code for this project, the displays were only updated where necessary such each modes visuals. Using the printNumberSHORT function, the amount of data transferred when writing numbers was lowered as leading zeros did not have to be drawn.   
 
 ## Conclusion
 The project was a success and all objectives were achieved. The jitteriness of the servos was tackled using a rolling average and a deadzone to stop noise affecting the motors while they were idle. A circuit was made which connected the Nucleo L432KC to two servos and powered the servos. The L432KC was also programmed so that it could control the two servo motors through PWM. SPI was successfully used to send data to the display and showed information on the duty percentage, angle of each servo, and had the option to display the PWM wave for easier debugging.
