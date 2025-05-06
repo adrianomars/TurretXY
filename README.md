@@ -527,7 +527,7 @@ To test if the display worked, the display itself was used along with the debugg
 The CR1 register was configured to enable software slave management, enable SSI, enable SPI, set PCLK/4, set MSB first, set master mode, set clock to 1 when idle, and set to SPI mode 3.
 
 ##### Testing update timing with the Logic Analyzer
-The updata timing and data transfer was tested using the logic analyzer to understand how timing and data transfers would be impacted by clearing the screen, updating the visuals, and writing calculated duty percentage and angle to the screen.
+The update timing and data transfer was tested using the logic analyzer to understand how timing and data transfers would be impacted by clearing the screen, updating the visuals, and writing calculated duty percentage and angle to the screen.
 
 <h3 align="center">Logic Analyzer: Aiming Angle</h3>
 
@@ -602,3 +602,20 @@ This video shows a demonstration of all of the features working in the project a
     <img src="https://img.youtube.com/vi/Jf0AD8lkRCE/0.jpg" alt="Video Demonstration of the TurretXY working">
   </a>
 </p>
+
+## References
+> Here are references to datasheets and a paper that were used to help design the project.
+
+[1] STMicroelectronics, “STM32L432KC ultra-low-power Arm Cortex-M4 32-bit MCU+FPU, 100DMIPS, up to 256KB Flash, 64KB SRAM, USB FS, analog, audio datasheet,” DS11451 Rev 4, May 2018. [Online]. Available: https://www.st.com/resource/en/datasheet/stm32l432kc.pdf
+
+[2] STMicroelectronics, “STM32 Nucleo-144 boards (MB1312) user manual,” UM2179 Rev 9, Nov. 2019. [Online]. Available: https://www.st.com/resource/en/user_manual/um2179-stm32-nucleo144-boards-mb1312-stmicroelectronics.pdf
+
+[3] STMicroelectronics, “STM32 Nucleo-32 boards (MB1180) user manual,” UM1956 Rev 5, Nov. 2018. [Online]. Available: https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-mb1180-stmicroelectronics.pdf
+
+[4] STMicroelectronics, “STM32L41xxx/42xxx/43xxx/44xxx/45xxx/46xxx advanced Arm-based 32-bit MCUs reference manual,” RM0394 Rev 4, Oct. 2018. [Online]. Available: https://www.st.com/resource/en/reference_manual/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf
+
+[5] Sitronix Technology Corp., “ST7735S 132RGB x 162dot 262K color with frame memory TFT controller/driver datasheet,” Ver. 1.3, Jun. 2012. [Online]. Available: https://www.crystalfontz.com/controllers/Sitronix/ST7735S
+
+[6] Tower Pro, “SG90 9g Micro Servo,” DatasheetCafe, May 16, 2023. [Online]. Available: https://www.datasheetcafe.com/SG90-pdf-23123/
+
+[7] G. di Pasquo, “SG90 Servo Characterization,” ResearchGate, Aug. 2021. [Online]. Available: https://www.researchgate.net/publication/353754375_SG90_Servo_Characterization. doi: https://doi.org/10.13140/RG.2.2.15715.89127
