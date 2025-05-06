@@ -38,6 +38,7 @@ This is the repository used for the Embedded Systems module's second project at 
 - [Conclusion](#conclusion)
 - [Future Work](#future-work)
 - [Video Demo of the Project](#video-demo-of-the-project)
+- [References](#references)
 
 ## Why this project?
 Microcontrollers are commonly used to control multiple motor servos along multiple axes in many industries. Some examples of use cases are in factories where automatic assembly is required, in advanced hospitals for surgical robots, and controlling radar dishes help tune into weak signals. 
